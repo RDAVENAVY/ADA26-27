@@ -1,9 +1,11 @@
 package com.example;
 
 import java.io.File;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
         /*File f1=new File("C:\\"); 
         File f2=new File("f.txt");
 
@@ -40,10 +42,28 @@ public class Main {
         // 2.
 
         String[] cont_d=d.list();
+        System.out.println("Contenido de d: ");
+        for(String s:cont_d){
+            System.out.println(s);
+        }
 
         // 3. 
 
+
+
+        // 4.
+
+        System.out.println("Nombre de archivo: ");
+        String nombre=sc.nextLine();
+        System.out.println("Nombre de la extension: ");
+        String extension=sc.nextLine();
+
+        System.out.println("Nombre de d: " + d.getName());
+
+        // 5.
+
         
+
         
     }
 }
