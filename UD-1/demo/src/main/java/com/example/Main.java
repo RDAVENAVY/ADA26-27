@@ -114,7 +114,7 @@ public class Main {
                 System.out.println("Archivos encontrados: ");
                 for (String s :contenido){
                     File f = new File(dir, s);
-                    if(f.isFile() && s.endWith(extension)){
+                    if(f.isFile() && s.endsWith(extension)){
                         System.out.println(s);
                     }
                 }
@@ -124,6 +124,7 @@ public class Main {
         }
     }
 
+    // Metodo 5
     public static void borrarTxt(File dir){
         if (dir.isDirectory()){
             String[] contenido =dir.list();
