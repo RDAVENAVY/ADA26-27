@@ -39,4 +39,90 @@ public class e1 {
 
         sc.close();
     }
+
+    // Metodo 1
+    public static void crearEstructura() {
+        try {
+            // Se crean los directorios con mkdir()
+            new File("./d").mkdir();
+            new File("./d/d1").mkdir();
+            new File("./d/d2").mkdir();
+            new File("./d/d3").mkdir();
+            new File("./d/d2/d21").mkdir();
+            new File("./d/d2/d22").mkdir();
+            new File("./d/d3/d31").mkdir();
+
+            // Se crean los ficheros con createNewFile()
+            new File("./d/d1/f11.txt").createNewFile();
+            new File("./d/d1/f12.txt").createNewFile();
+            new File("./d/d2/d21/f21.txt").createNewFile();
+            new File("./d/d2/d22/f222.txt").createNewFile(); 
+            
+            System.out.println("Estructura de archivos creada con exito.");
+        } catch (IOException e) {
+            System.out.println("Error de E/S al intentar crear los ficheros.");
+        }
+    }
+
+    //Metodo 2
+    public static void listarRaiz(File dir) {
+        String[] cont_d = dir.list();
+        if (cont_d != null) {
+            System.out.println("Contenido de " + dir.getName() + ":");
+            for (String s : cont_d) {
+                System.out.println(s);
+            }
+        }
+    }
+
+    //Metodo 3
+    public static void listarEstructura(File dir){
+        if (dir.exists()){
+            System.out.println(dir.getName());
+            if (dir.isDirectory()){
+                String[] contenido = dir.list();
+                if(contenido != null){
+                    for (String s : contenido){
+                        listarEstructura((new File(dir, s)));
+                    }
+                }
+            }
+        }
+    }
+
+    // Metodo 4
+    public static void mostrarPorExtension(File dir, String extension){
+        if (dir.isDirectory()){
+            String[] contenido = dir.list();
+            if (contenido != null){
+                System.out.println("Archivos encontrados: ");
+                for (String s :contenido){
+                    File f = new File(dir, s);
+                    if(f.isFile() && s.endsWith(extension)){
+                        System.out.println(s);
+                    }
+                }
+            }
+        } else {
+            System.out.println("El directorio proporcionado no existe o no es valido.");
+        }
+    }
+
+    // Metodo 5
+    public static void borrarTxt(File dir){
+        if (dir.isDirectory()){
+            String[] contenido =dir.list();
+            if(contenido !=null){
+                for(String s : contenido){
+                    File f = new File(dir, s);
+                    if (f.isFile() && s.endsWith(".txt")){
+                        boolean exito =f.delete();
+                        if(exito){
+                            System.out.println("Se ha borrado el fichero: " + f.getName());
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
