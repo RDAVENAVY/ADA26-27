@@ -1,6 +1,11 @@
-package main.java.com.example.ej3;
+package com.example.ej3;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class e3 {
@@ -8,16 +13,16 @@ public class e3 {
         
         // 1.
 
-        String imagen = "./imagen.png";
+        String imagen = "imagen.png";
         copiarImagen(imagen);
 
         // 2.
 
-        creacionFichero();
+        creacionFichero("fichero.dat");
 
         // 3.
 
-        lecturaCalculo("./fichero.dat");
+        lecturaCalculo("fichero.dat");
 
     }
 
@@ -47,26 +52,29 @@ public class e3 {
     }
 
     // METODO 2: Implementacion del metodo para crear un fichero
-    public static void creacionFichero(){
+    public static void creacionFichero(String nombreArchivo){
         Scanner sc =new Scanner(System.in);
         
         try {
 
-            DataOutputStream cr= new DataOutputStream(new FileOutputStream("archivo.dat"));
+            DataOutputStream cr= new DataOutputStream(new FileOutputStream("archivo.dat"))
 
-            String entrada;
             while(true){
-                cr.writeInt(sc.nextInt());
-                cr.writeChar(" ");
-                cr.writeInt(sc.nextInt());
-                cr.writeChar("\n");
+                String linea = sc.nextLine();
                 
-                entrada=sc.nextLine();
-                if(entrada.isEmpty()){
+                if(linea.isEmpty()){
                     break;
                 }
-            }
 
+                int num1 = sc.nextInt();
+                int num2 = sc.nextInt();
+
+                // Guardar los enteros como tipo primitivo Java
+                cr.writeInt(num1);
+                cr.writeInt(num2);
+                }
+
+            sc.close();
             cr.flush();
             cr.close();
             
@@ -75,31 +83,47 @@ public class e3 {
         }
     }
 
+
     // METODO 3: Lectura y calcculo de contenidos de un fichero
     public static void lecturaCalculo(String archivo){
 
+        int sumaColumna1 = 0;
+        int cantidadNumeros = 0;
+        long sumaPonderadaNum = 0;
+        long sumaPonderadaDen = 0; 
 
-        try {
-
-            DataInputStream ca= new DataInputStream(new DataInputStream(archivo));
-
-            int a;
-            int b;
-            int contador;
-            while(true){
-                a=ca.readInt();
+        try (DataInputStream ca = new DataInputStream(new FileInputStream(archivo))) {
+            
+            while (true) {
+                int a = ca.readInt();
+                int b = ca.readInt();
                 
-                if(){}
+                // Calculos
+                sumaColumna1 += a;
+                cantidadNumeros++;
+                
+                sumaPonderadaNum += (long) a * b;
+                sumaPonderadaDen += b;
             }
+            
+        } catch (EOFException e) {
+            // Se alcanza el final del fichero.
+            if (cantidadNumeros > 0) {
+                double mediaAritmetica = (double) sumaColumna1 / cantidadNumeros;
+                System.out.println("La media aritmetica de la primera columna es: " + mediaAritmetica);
                 
-            
-
-            cr.flush();
-            cr.close();
-            
+                if (sumaPonderadaDen != 0) {
+                    double mediaPonderada = (double) sumaPonderadaNum / sumaPonderadaDen;
+                    System.out.println("La media ponderada de la primera columna es: " + mediaPonderada);
+                } else {
+                    System.out.println("No se puede calcular la media ponderada (la suma de los pesos es 0).");
+                }
+            } else {
+                System.out.println("El fichero esta vacio o no contiene pares validos.");
+            }
         } catch (IOException e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
-
     }
 }
+
